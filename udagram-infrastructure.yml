@@ -8,6 +8,18 @@ Parameters:
   VPCCidr:
     Description: Please enter a valid CIDR Block for VPC
     Type: String
+  CIDRPublicSubnet1:
+    Description: Please enter CIDR Block for Public Subnet 1
+    Type: String
+  CIDRPublicSubnet2:
+    Description: Please enter CIDR Block for Public Subnet 2
+    Type: String
+  CIDRPrivateSubnet1:
+    Description: Please enter CIDR Block for Private Subnet 1
+    Type: String
+  CIDRPrivateSubnet2:
+    Description: Please enter CIDR Block for Private Subnet 2
+    Type: String
 
 Resources:
   UdagramVPC:
@@ -30,3 +42,43 @@ Resources:
     Properties:
       InternetGatewayId: !Ref UdagramIGW
       VpcId: !Ref UdagramVPC
+
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref UdagramVPC
+      CidrBlock: !Ref CIDRPublicSubnet1
+      AvailabilityZone: !Select [0, !GetAZs '']
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} PublicSubnet-1 AZ-1
+
+  PublicSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref UdagramVPC
+      CidrBlock: !Ref CIDRPublicSubnet2
+      AvailabilityZone: !Select [1, !GetAZs '']
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} PublicSubnet-2 AZ-2
+
+  PrivateSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref UdagramVPC
+      CidrBlock: !Ref CIDRPrivateSubnet1
+      AvailabilityZone: !Select [0, !GetAZs '']
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} PrivateSubnet-1 AZ-1
+
+  PrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref UdagramVPC
+      CidrBlock: !Ref CIDRPrivateSubnet2
+      AvailabilityZone: !Select [1, !GetAZs '']
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} PrivateSubnet-2 AZ-2
