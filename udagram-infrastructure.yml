@@ -17,3 +17,16 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${EnvironmentName}-VPC
+
+  UdagramIGW:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName}-IGW
+
+  VPCIGWAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref UdagramIGW
+      VpcId: !Ref UdagramVPC
