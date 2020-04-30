@@ -1,0 +1,19 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Udagram Assignmet Udacity Cloud DevOps Nanadegree Zakir Hussain 2020
+
+Parameters:
+  EnvironmentName:
+    Description: Name to prefix resources to make them easily identifiable
+    Type: String
+  VPCCidr:
+    Description: Please enter a valid CIDR Block for VPC
+    Type: String
+
+Resources:
+  UdagramVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VPCCidr
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName}-VPC
