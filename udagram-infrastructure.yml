@@ -209,3 +209,20 @@ Resources:
           IpProtocol: tcp
           FromPort: 0
           ToPort: 65535
+
+  AppLauchConfig:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      ImageId: "ami-0d6621c01e8c2de2c"
+      InstanceType: "t2.micro"
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          apt-get update -y
+          apt-get install unzip awscli -y
+          apt-get install apache2 -y
+          systemctl start apache2.service
+          cd /var/www/html
+          echo "<h1>Yay, it works!</h1>" > index.html
+      SecurityGroups:
+        - Ref: UdagramServerSecurityGroup
