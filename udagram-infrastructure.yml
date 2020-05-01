@@ -177,9 +177,35 @@ Resources:
       RouteTableId: !Ref PrivateRouteTable2
       SubnetId: !Ref PrivateSubnet2
 
+  # IAM Role to access s3 bucket 
+  UdacityS3ReadOnlyEC2:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: '/'
+      Policies:
+        - PolicyName: 'S3ReadOnlyAccess'
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: 'Allow'
+                Action:
+                  - "s3:GetObject"
+                Resource: '*'
 
-
-
+  ProfileWithRolesForOurApp:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - !Ref UdacityS3ReadOnlyEC2
 
 # Application Stack
   ALPSecurityGroup:
